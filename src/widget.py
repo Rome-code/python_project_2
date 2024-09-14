@@ -1,7 +1,7 @@
 from masks import get_mask_account, get_mask_card_number
 
-"""Ввод номера карты или номера счета"""
-account_type_card_num = input()
+# """Ввод номера карты или номера счета"""
+# account_type_card_num = input()
 
 
 def mask_account_card(account_type_card_num: str) -> str:
@@ -16,8 +16,8 @@ def mask_account_card(account_type_card_num: str) -> str:
     return " ".join(account_type_card_num_list)
 
 
-"""Ввод строки с датой и временем"""
-date_and_time = input()
+# """Ввод строки с датой и временем"""
+# date_and_time = input()
 
 
 def get_date(date_and_time: str) -> str:
@@ -27,6 +27,6 @@ def get_date(date_and_time: str) -> str:
     return nec_form_date
 
 
-"""Вызов и возвращение результатов функций"""
-print(mask_account_card(account_type_card_num))
-print(get_date(date_and_time))
+#"""Вызов и возвращение результатов функций"""
+# print(mask_account_card(account_type_card_num))
+#print(get_date(date_and_time))
