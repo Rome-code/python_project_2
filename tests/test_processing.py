@@ -1,9 +1,9 @@
 import pytest
 
 from src.processing import filter_by_state, sort_by_date
-from tests.conftest import list_of_dict_all_states_canceled, list_of_dict_sorted_1, list_of_dict_sorted_2
-from tests.conftest import list_of_dict_without_state, list_of_dict_sort_res_true
-from tests.conftest import list_of_dict_sort_res_false, list_of_dict_ident_dates_sort
+from tests.conftest import (list_of_dict_all_states_canceled, list_of_dict_ident_dates_sort,
+                            list_of_dict_sort_res_false, list_of_dict_sort_res_true, list_of_dict_sorted_1,
+                            list_of_dict_sorted_2, list_of_dict_without_state)
 
 
 @pytest.fixture
