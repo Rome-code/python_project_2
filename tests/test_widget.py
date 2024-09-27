@@ -1,55 +1,69 @@
 import pytest
 
-from src.widget import get_date, mask_account_card
+from src.processing import filter_by_state, sort_by_date
+from tests.conftest import (list_of_dict_all_states_canceled, list_of_dict_ident_dates_sort,
+                            list_of_dict_sort_res_false, list_of_dict_sort_res_true, list_of_dict_sorted_1,
+                            list_of_dict_sorted_2, list_of_dict_without_state)
 
-"""Тесты для mask_account_card"""
+
+@pytest.fixture
+def list_of_dict_fixture() -> list:
+    return [
+        {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+        {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+        {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
+    ]
+
+
+@pytest.fixture
+def list_of_dict_ident_dates_fixture() -> list:
+    return [
+        {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+        {"id": 88828829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
+        {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
+        {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
+        {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
+    ]
+
+
+"""Тесты для функции filter_by_state"""
+
+
+def test_filter_by_state_basic(list_of_dict_fixture: list) -> None:
+    """Тест на срабатывание функции со списком словарей list_of_dict по дефолтным условиям"""
+    assert filter_by_state(list_of_dict_fixture) == list_of_dict_sorted_1
+
+
+def test_filter_by_state_with_state_arg_canceled(list_of_dict_fixture: list) -> None:
+    """Тест на срабатывание функции со списком словарей, где state = 'CANCELED'"""
+    assert filter_by_state(list_of_dict_fixture, state="CANCELED") == list_of_dict_sorted_2
+
+
+"""Параметризация функции filter_by_state."""
 
 
 @pytest.mark.parametrize(
     "value, expected",
-    [
-        ("Visa Platinum 7000792289606361", "Visa Platinum 7000 79** **** 6361"),
-        ("Счет 73654108430135874305", "Счет **4305"),
-    ],
+    [(list_of_dict_without_state, list_of_dict_without_state), (list_of_dict_all_states_canceled, [])],
 )
-def test_mask_account_card_basic(value: str, expected: str) -> None:
-    """Тест на срабатыание функции с корректным номером карты и счета"""
-    assert mask_account_card(value) == expected
+def test_filter_by_state_various_input_data(value: list, expected: list) -> None:
+    assert filter_by_state(value) == expected
 
 
-@pytest.mark.parametrize(
-    "value, expected",
-    [
-        ("7000792289606361", "Некорректный ввод данных"),
-        ("Счет", "Некорректный ввод данных"),
-        ("Maestro 7000792289606361", "Maestro 7000 79** **** 6361"),
-        ("MasterCard 7000792289606361", "MasterCard 7000 79** **** 6361"),
-        ("Visa Classic 7000792289606361", "Visa Classic 7000 79** **** 6361"),
-        ("MasterCard 7000792289606361", "MasterCard 7000 79** **** 6361"),
-        ("Visa Platinum 7000792289606361", "Visa Platinum 7000 79** **** 6361"),
-        ("Visa Gold 7000792289606361", "Visa Gold 7000 79** **** 6361"),
-        ("Visa Gold 700079228960636", "Некорректный ввод данных"),
-    ],
-)
-def test_mask_account_card_various_input_data(value: str, expected: str) -> None:
-    assert mask_account_card(value) == expected
+"""Тесты для функции sort_by_date"""
 
 
-"""Тесты для get_date"""
+def test_sort_by_date_basic(list_of_dict_fixture: list) -> None:
+    """Тестирование сортировки списка словарей в порядке убывания."""
+    assert sort_by_date(list_of_dict_fixture) == list_of_dict_sort_res_true
 
 
-def test_get_date_basic() -> None:
-    """Срабатывание с данными '2018-10-14T08:21:33.419441'"""
-    assert get_date("2018-10-14T08:21:33.419441") == "14.10.2018"
+def test_sort_by_date_rev_false(list_of_dict_fixture: list) -> None:
+    """Тестирование сортировки списка словарей по датам в порядке возрастания."""
+    assert sort_by_date(list_of_dict_fixture, sort_=False) == list_of_dict_sort_res_false
 
 
-@pytest.mark.parametrize(
-    "value, expected",
-    [
-        ("08:21:33.419441", "Некорректное значение даты"),
-        ("2018-14T08:21:33.419441", "Некорректное значение даты"),
-    ],
-)
-def test_get_date_uncorrectly_date(value: str, expected: str) -> None:
-    """Срабатывание функции с некорректным значением даты"""
-    assert get_date(value) == expected
+def test_sort_by_date_ident_dates(list_of_dict_ident_dates_fixture: list) -> None:
+    """Проверка корректности сортировки при одинаковых датах"""
+    assert sort_by_date(list_of_dict_ident_dates_fixture) == list_of_dict_ident_dates_sort
