@@ -32,6 +32,8 @@ def transaction_descriptions(transaction_list):
 
 
 def card_number_generator(start, stop):
+    if start == 0 and stop > 0:
+        start += 1
     for number in range(start, stop):
         card_number = str(number)
         while len(card_number) < 16:
@@ -41,5 +43,5 @@ def card_number_generator(start, stop):
         yield formatted_card_number
 
 
-for card_number in card_number_generator(2000000000000000, 2000000000000010):
+for card_number in card_number_generator(0, 5):
     print(card_number)
