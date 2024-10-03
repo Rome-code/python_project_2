@@ -19,7 +19,7 @@ from tests.conftest import (card_number_generator_exp_result_0_5, card_number_ge
         (result_usd, "RUB", []),
     ],
 )
-def test_filter_by_currency_various_input_data(value, currency, expected):
+def test_filter_by_currency_various_input_data(value: list, currency: str, expected: list) -> None:
     result = list(filter_by_currency(value, currency))
     assert result == expected
 
@@ -36,7 +36,7 @@ def test_filter_by_currency_various_input_data(value, currency, expected):
         ([], [[]]),
     ],
 )
-def test_transaction_descriptions(value, expected):
+def test_transaction_descriptions(value: list, expected: list) -> None:
     result = list(transaction_descriptions(value))
     assert result == expected
 
@@ -53,9 +53,9 @@ def test_transaction_descriptions(value, expected):
         (0, 0, []),
         (1, 0, []),
         (8, 5, []),
-        (5,5, [])
-    ]
+        (5, 5, []),
+    ],
 )
-def test_card_number_generator(start, stop, expected):
+def test_card_number_generator(start: int, stop: int, expected: list) -> None:
     result = list(card_number_generator(start, stop))
     assert result == expected

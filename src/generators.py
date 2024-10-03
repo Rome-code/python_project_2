@@ -1,6 +1,8 @@
-from tests.conftest import transactions, description_res, result_usd, result_rub
+# from tests.conftest import transactions, description_res, result_usd, result_rub
+from typing import Generator
 
-def filter_by_currency(transaction_list, currency):
+
+def filter_by_currency(transaction_list: list, currency: str) -> Generator:
     if len(transaction_list) > 0:
         for transaction in transaction_list:
             if transaction.get("operationAmount", [{}]).get("currency", [{}]).get("code", [{}]) == currency:
@@ -9,7 +11,7 @@ def filter_by_currency(transaction_list, currency):
         yield []
 
 
-usd_transactions = filter_by_currency([], "USD")
+# usd_transactions = filter_by_currency([], "USD")
 # try:
 #     for i in range(len(transactions)):
 #         print(next(usd_transactions))
@@ -18,7 +20,7 @@ usd_transactions = filter_by_currency([], "USD")
 #     pass
 
 
-def transaction_descriptions(transaction_list):
+def transaction_descriptions(transaction_list: list) -> Generator:
     if len(transaction_list) > 0:
         for transaction in transaction_list:
             yield transaction.get("description")
@@ -31,7 +33,7 @@ def transaction_descriptions(transaction_list):
 #     print(next(descriptions))
 
 
-def card_number_generator(start, stop):
+def card_number_generator(start: int, stop: int) -> Generator:
     if start == 0 and stop > 0:
         start += 1
     for number in range(start, stop):
@@ -43,5 +45,5 @@ def card_number_generator(start, stop):
         yield formatted_card_number
 
 
-for card_number in card_number_generator(0, 5):
-    print(card_number)
+# for card_number in card_number_generator(0, 5):
+#     print(card_number)
