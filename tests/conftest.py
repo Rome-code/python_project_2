@@ -256,3 +256,6 @@ card_number_generator_exp_result_0_5 = [
 '0000 0000 0000 0003',
 '0000 0000 0000 0004'
 ]
+
+def my_function(x, y):
+    return x / y
