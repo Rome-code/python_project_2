@@ -4,6 +4,7 @@ from src.decorators import log
 
 
 def test_log_with_filename_1():
+    """Тестирует результат успешного срабатывания функции"""
     @log(filename="log.txt")
     def my_function(x, y):
         return x * y
@@ -13,6 +14,7 @@ def test_log_with_filename_1():
 
 
 def test_log_with_filename_2_divizion_zero():
+    """Тестирует запись в файл после успешного выполнения"""
     @log(filename="log.txt")
     def my_function(x, y):
         return x / y
@@ -22,6 +24,7 @@ def test_log_with_filename_2_divizion_zero():
 
 
 def test_log_without_filename_1():
+    """Тестирует результат успешного срабатывания декорируемой функции"""
     @log()
     def my_function(x, y):
         return x * y
